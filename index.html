@@ -144,6 +144,22 @@
   #qr img, #qr canvas { width:120px; height:120px; }
   .top { position:fixed; right:1.25rem; bottom:1.25rem; z-index:6; width:2.75rem; height:2.75rem; border-radius:50%; border:2px solid var(--peach); background:var(--bg); color:var(--peach); font-size:1.2rem; cursor:pointer; }
 
+  .mviewer { margin-top:1.5rem; max-width:none; }
+  .mstage { position:relative; aspect-ratio:16/9; max-height:64vh; width:max(60vw,480px); margin-left:calc(50% - max(60vw,480px) / 2); overflow:hidden; background:radial-gradient(circle at 50% 40%,#1f2d6b,#0c1331); border:1px solid var(--line); border-radius:8px; }
+  #models { overflow-x:clip; }
+  #models .wrap { width:100%; }
+  @media (max-width:640px) { .mstage { aspect-ratio:4/3; width:100%; margin-left:0; } }
+  .mstage canvas { width:100%; height:100%; display:block; cursor:grab; touch-action:none; }
+  .mstage canvas:active { cursor:grabbing; }
+  .mstage canvas:focus-visible { outline:3px solid var(--peach); outline-offset:-3px; }
+  .mnote { position:absolute; left:1rem; right:1rem; bottom:1rem; margin:0; padding:.5rem .75rem; border-radius:6px; font-size:.9rem; background:rgba(12,19,49,.85); }
+  .mbar { display:flex; flex-wrap:wrap; gap:.75rem 1.5rem; justify-content:space-between; margin:1rem 0 .75rem; }
+  .mtabs, .mctl { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .mbar button { font:inherit; cursor:pointer; padding:.3rem 1rem; border-radius:999px; border:1.5px solid var(--line); background:transparent; color:var(--ink); }
+  .mbar button:hover { border-color:var(--ink); }
+  .mbar button[aria-pressed=true] { background:var(--peach); color:var(--bg); border-color:var(--peach); }
+  .mviewer h3 { font-size:1.2rem; }
+  .mviewer p { opacity:.8; }
   @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto} h1 span i{animation:none} .thumb,.stage,.process button{transition:none} .w i{transition:none;transform:none} .cue-line{animation:none} .skills .bar i,.skills .note{transition:none} }
   @media (max-width:640px) { nav a{margin-left:1rem} section{align-items:flex-end} }
 </style>
@@ -157,7 +173,7 @@
 <header>
   <div class="wrap">
     <a class="brand" href="#hero">Syahmi Ikhwan</a>
-    <nav aria-label="Main"><a href="#work">Work</a><a href="#roles">Roles</a><a href="#about">About</a><a href="#timeline">Timeline</a><a href="#contact">Contact</a></nav>
+    <nav aria-label="Main"><a href="#work">Work</a><a href="#models">3D Model</a><a href="#roles">Roles</a><a href="#about">About</a><a href="#timeline">Timeline</a><a href="#contact">Contact</a></nav>
   </div>
 </header>
 
@@ -177,15 +193,34 @@
     <div class="grid" id="grid"></div>
   </div></section>
 
+  <section id="models" data-i="2"><div class="wrap">
+    <span class="tag">02 / 3D Model</span>
+    <h2>3D model</h2>
+    <p>Drag to rotate. Scroll or pinch to zoom.</p>
+    <div class="mviewer">
+      <div class="mstage"><canvas id="mcanvas" aria-label="Interactive 3D model viewer"></canvas><p class="mnote" id="mnote">Loading viewer...</p></div>
+      <div class="mbar">
+        <div class="mtabs" id="mtabs" role="group" aria-label="Choose a model"></div>
+        <div class="mctl">
+          <button type="button" id="mrot" aria-pressed="true">Auto-rotate</button>
+          <button type="button" id="mreset">Reset view</button>
+          <button type="button" id="mopen">Open .glb file</button>
+          <input type="file" id="mfile" accept=".glb,.gltf" hidden>
+        </div>
+      </div>
+      <h3 id="mt"></h3><p id="md"></p>
+    </div>
+  </div></section>
+
   <section id="roles" data-i="1"><div class="wrap">
-    <span class="tag">02 / Roles</span>
+    <span class="tag">03 / Roles</span>
     <h2>My roles</h2>
     <p>What I did on each project.</p>
     <ul class="roles" id="rolelist" aria-label="Roles by project"></ul>
   </div></section>
 
   <section id="about" data-i="2"><div class="wrap"><div class="copy">
-    <span class="tag">03 / About</span>
+    <span class="tag">04 / About</span>
     <h2>About</h2>
     <p>I am an animation student at UNIMAS and a 3D generalist. I enjoy texturing 3D models and laying out environments, and next I am preparing for my final year project.</p>
     <!-- Edit these numbers and labels -->
@@ -208,7 +243,7 @@
   </div></div></section>
 
   <section id="timeline" data-i="3"><div class="wrap"><div class="copy">
-    <span class="tag">04 / Timeline</span>
+    <span class="tag">05 / Timeline</span>
     <h2>Experience</h2>
     <p class="hint">Select an entry to open it.</p>
     <ol class="tl" aria-label="Timeline">
@@ -219,7 +254,7 @@
   </div></div></section>
 
   <section id="contact" data-i="3"><div class="wrap">
-    <span class="tag">05 / Contact</span>
+    <span class="tag">06 / Contact</span>
     <h2>Let's work together</h2>
     <a class="mail" href="mailto:kuraeii51@gmail.com">kuraeii51@gmail.com</a>
     <div class="links">
@@ -252,6 +287,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -411,6 +448,87 @@
   const topBtn = document.getElementById('topbtn');
   addEventListener('scroll', () => { topBtn.hidden = scrollY < 600; }, { passive:true });
   topBtn.onclick = () => scrollTo({ top:0 });
+
+  /* ---- 3D model viewer ---- */
+  /* Put your .glb files in a "models" folder and list them here. */
+  const models = [
+    { t:'Textured 3D Model', d:'Texturing done in Adobe Substance Painter', file:'models/my-model.glb' }
+  ];
+  (function () {
+    const canvas = document.getElementById('mcanvas'), note = document.getElementById('mnote');
+    const tabs = document.getElementById('mtabs'), title = document.getElementById('mt'), desc = document.getElementById('md');
+    if (!window.THREE || !THREE.GLTFLoader || !THREE.OrbitControls) { note.textContent = 'The 3D viewer could not load. Check your connection.'; return; }
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true }); }
+    catch (e) { note.textContent = 'Your browser does not support 3D graphics.'; return; }
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    const scene = new THREE.Scene();
+    const cam = new THREE.PerspectiveCamera(40, 16 / 9, .01, 1000);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x223366, 1));
+    const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(3, 5, 4); scene.add(key);
+    const rim = new THREE.DirectionalLight(0x6c86ff, .8); rim.position.set(-4, 2, -3); scene.add(rim);
+    const controls = new THREE.OrbitControls(cam, canvas);
+    controls.enableDamping = true; controls.autoRotate = !rm; controls.autoRotateSpeed = 1.2;
+    if (controls.listenToKeyEvents) { canvas.tabIndex = 0; controls.listenToKeyEvents(canvas); }
+    let current = null, home = new THREE.Vector3(0, 1, 3);
+    function setModel(obj) {
+      if (current) scene.remove(current);
+      const box = new THREE.Box3().setFromObject(obj), size = box.getSize(new THREE.Vector3());
+      obj.position.sub(box.getCenter(new THREE.Vector3()));
+      const r = Math.max(size.x, size.y, size.z) || 1;
+      current = new THREE.Group(); current.add(obj); scene.add(current);
+      cam.near = r / 100; cam.far = r * 100; cam.updateProjectionMatrix();
+      home.set(r * .9, r * .45, r * 1.5);
+      controls.minDistance = r * .6; controls.maxDistance = r * 5;
+      reset();
+    }
+    function reset() { cam.position.copy(home); controls.target.set(0, 0, 0); controls.update(); }
+    function placeholder() {
+      setModel(new THREE.Mesh(new THREE.TorusKnotGeometry(.6, .2, 128, 16), new THREE.MeshStandardMaterial({ color:0xffc8b4, roughness:.6 })));
+    }
+    const loader = new THREE.GLTFLoader();
+    function load(src, onFail) {
+      note.hidden = false; note.textContent = 'Loading model...';
+      loader.load(src, g => { setModel(g.scene); note.hidden = true; }, undefined, onFail);
+    }
+    function pick(n) {
+      const m = models[n];
+      title.textContent = m.t; desc.textContent = m.d;
+      tabs.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', String(k === n)));
+      load(m.file, () => { placeholder(); note.hidden = false; note.textContent = 'Model not found: ' + m.file + '. Add your .glb to the models folder, or use Open .glb file.'; });
+    }
+    models.forEach((m, n) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = m.t; b.onclick = () => pick(n);
+      tabs.appendChild(b);
+    });
+    tabs.hidden = models.length < 2;
+    const rot = document.getElementById('mrot'), file = document.getElementById('mfile');
+    rot.setAttribute('aria-pressed', String(controls.autoRotate));
+    rot.onclick = () => { controls.autoRotate = !controls.autoRotate; rot.setAttribute('aria-pressed', String(controls.autoRotate)); };
+    document.getElementById('mreset').onclick = reset;
+    document.getElementById('mopen').onclick = () => file.click();
+    file.onchange = () => {
+      const f = file.files[0]; if (!f) return;
+      const url = URL.createObjectURL(f);
+      title.textContent = f.name; desc.textContent = 'Opened from your computer. Only you can see this.';
+      tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+      load(url, () => { note.hidden = false; note.textContent = 'Could not open that file. Use a .glb file.'; });
+      setTimeout(() => URL.revokeObjectURL(url), 15000);
+      file.value = '';
+    };
+    function size() {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (w && h) { renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+    }
+    new ResizeObserver(size).observe(canvas); size();
+    let visible = false;
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(canvas);
+    (function loop() { requestAnimationFrame(loop); if (visible) { controls.update(); renderer.render(scene, cam); } })();
+    pick(0);
+  })();
 
   /* ---- 3D scene (the page still works if WebGL is unavailable) ---- */
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
