@@ -48,13 +48,16 @@
   .btn:hover { border-color:var(--ink); }
   .scrollcue { margin-top:2.5rem; font-size:.9rem; opacity:.7; }
 
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1.5rem; margin-top:1rem; }
-  .card { all:unset; cursor:pointer; display:block; }
+  .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:1.5rem; row-gap:0; margin-top:1rem; }
+  .card { all:unset; box-sizing:border-box; cursor:pointer; display:grid; grid-template-rows:subgrid; grid-row:span 4; row-gap:0; padding-bottom:2rem; }
   .card:focus-visible { outline:3px solid var(--peach); outline-offset:4px; }
-  .thumb { aspect-ratio:16/9; border-radius:6px; margin-bottom:.75rem; transition:transform .25s, box-shadow .25s; }
+  .card .n { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .thumb { width:100%; aspect-ratio:16/9; border-radius:6px; margin-bottom:.75rem; transition:transform .25s, box-shadow .25s; }
   .card:hover .thumb { transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,.35); }
-  .card h3 { font-size:1.2rem; }
-  .card p { font-size:.95rem; opacity:.75; }
+  .card h3 { font-size:1.15rem; line-height:1.3; }
+  .card p { margin-top:.35rem; font-size:.95rem; line-height:1.5; opacity:.75; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  @media (max-width:900px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:560px) { .grid { grid-template-columns:1fr; } }
   .g0 { background:linear-gradient(135deg,#6C86FF,#B7C4FF); }
   .g1 { background:linear-gradient(135deg,#FFC8B4,#FF8F70); }
   .g2 { background:linear-gradient(135deg,#8FD9C0,#3F9E84); }
@@ -69,6 +72,17 @@
   .process button[aria-pressed=true] { border-left-color:var(--peach); background:rgba(255,200,180,.1); }
   .process b { min-width:7rem; }
   .process span { opacity:.75; }
+  .roles { list-style:none; padding:0; margin-top:1.5rem; max-width:52rem; counter-reset:r; }
+  .roles li { display:grid; grid-template-columns:2.5rem minmax(0,15rem) 1fr; gap:.5rem 1.25rem; padding:1.1rem .5rem; border-top:1px solid var(--line); align-items:baseline; counter-increment:r; transition:background .2s; }
+  .roles li:last-child { border-bottom:1px solid var(--line); }
+  .roles li:hover { background:rgba(238,242,247,.05); }
+  .roles li::before { content:"0" counter(r); font:500 .75rem ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; opacity:.6; }
+  .roles b { display:block; font-size:1.05rem; line-height:1.3; }
+  .roles small { display:block; margin-top:.25rem; font:500 .72rem ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; text-transform:uppercase; opacity:.6; }
+  .chips { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .chips span { background:rgba(255,200,180,.1); border:1px solid rgba(255,200,180,.28); border-radius:999px; padding:.2rem .85rem; font-size:.88rem; white-space:nowrap; }
+  .drole { font-size:.95rem; opacity:.75; margin-top:.25rem; }
+  @media (max-width:640px) { .roles li { grid-template-columns:2rem 1fr; } .roles .chips { grid-column:2; } }
   .tools { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; margin-top:1.5rem; }
   .tools li { border:1.5px solid var(--line); border-radius:999px; padding:.15rem .85rem; font-size:.95rem; }
 
@@ -80,17 +94,12 @@
   dialog::backdrop { background:rgba(8,12,32,.75); }
   .stage { aspect-ratio:16/9; position:relative; transition:filter .3s; }
   .stage video, .stage img { width:100%; height:100%; object-fit:cover; display:block; }
-  .stage.clay { filter:grayscale(1) contrast(.85) brightness(1.15); }
-  .stage.wire { filter:grayscale(1) brightness(.5); }
-  .stage.wire::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(0deg,rgba(108,134,255,.7) 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,rgba(108,134,255,.7) 0 1px,transparent 1px 22px); }
   .dbody { padding:1.25rem 1.5rem 1.5rem; }
   .dbody h3 { font-size:1.5rem; }
   .dtop { display:flex; justify-content:space-between; align-items:center; gap:.5rem; margin-bottom:.5rem; }
   .dtop span { font-size:.9rem; opacity:.7; }
   .dnav { display:flex; gap:.5rem; }
-  .passes { display:flex; gap:.5rem; margin:1rem 0 .25rem; flex-wrap:wrap; }
-  .passes button, .dnav button { font:inherit; cursor:pointer; padding:.3rem 1rem; border-radius:999px; border:1.5px solid var(--line); background:transparent; color:var(--ink); }
-  .passes button[aria-pressed=true] { background:var(--peach); color:var(--bg); border-color:var(--peach); }
+  .dnav button { font:inherit; cursor:pointer; padding:.3rem 1rem; border-radius:999px; border:1.5px solid var(--line); background:transparent; color:var(--ink); }
   .dkeys { font-size:.85rem; opacity:.6; }
 
   .tag { font:500 .8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--peach); display:block; margin-bottom:1rem; }
@@ -103,28 +112,11 @@
   .stats span, .n, .hud { font:500 .75rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; text-transform:uppercase; }
   .stats span { opacity:.7; }
   .n { display:block; margin-bottom:.4rem; opacity:.7; }
-  .viewer { position:relative; height:min(70vh,560px); margin-top:1.5rem; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:radial-gradient(circle at 50% 40%,rgba(108,134,255,.3),rgba(18,28,71,.7)); }
-  .viewer model-viewer { width:100%; height:100%; --poster-color:transparent; background:transparent; }
-  .vmsg { position:absolute; inset:0; display:grid; place-items:center; text-align:center; padding:1.5rem; pointer-events:none; opacity:.85; }
-  .vmsg[hidden] { display:none; }
-  .vctl { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin-top:1rem; }
-  .vctl button, .vctl label.pick, .vctl select { font:inherit; font-size:.95rem; cursor:pointer; padding:.35rem 1rem; border-radius:999px; border:1.5px solid var(--line); background:transparent; color:var(--ink); }
-  .vctl select option { color:#121C47; }
-  .vctl button[aria-pressed=true] { background:var(--peach); color:var(--bg); border-color:var(--peach); }
-  .vctl button:hover, .vctl label.pick:hover { border-color:var(--ink); }
-  .vctl label.range { display:flex; align-items:center; gap:.5rem; font-size:.95rem; }
-  .vctl input[type=range] { accent-color:var(--peach); }
-  .vctl input[type=file] { position:absolute; opacity:0; width:1px; height:1px; }
-  .vctl label.pick:focus-within { outline:3px solid var(--peach); outline-offset:3px; }
   .hud { position:fixed; left:1.5rem; bottom:1.25rem; z-index:6; opacity:.75; pointer-events:none; }
   .cue-line { display:inline-block; width:1px; height:2.5rem; background:linear-gradient(var(--peach),transparent); vertical-align:middle; margin-right:.75rem; transform-origin:top; animation:drip 1.8s ease-in-out infinite; }
   @keyframes drip { 0% { transform:scaleY(0); } 60% { transform:scaleY(1); } 100% { transform:scaleY(1); opacity:0; } }
 
   [hidden] { display:none !important; }
-  .filters { display:flex; gap:.5rem; flex-wrap:wrap; margin:1rem 0 .5rem; }
-  .filters button { font:inherit; cursor:pointer; padding:.3rem 1rem; border-radius:999px; border:1.5px solid var(--line); background:transparent; color:var(--ink); }
-  .filters button:hover { border-color:var(--ink); }
-  .filters button[aria-pressed=true] { background:var(--peach); color:var(--bg); border-color:var(--peach); }
   .dbody .btn { display:inline-block; margin-top:.75rem; }
   .strip { display:flex; gap:.5rem; margin-top:1rem; overflow-x:auto; padding:3px; }
   .strip button { border:0; padding:0; cursor:pointer; flex:0 0 96px; aspect-ratio:16/9; border-radius:4px; opacity:.55; }
@@ -155,7 +147,6 @@
   @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto} h1 span i{animation:none} .thumb,.stage,.process button{transition:none} .w i{transition:none;transform:none} .cue-line{animation:none} .skills .bar i,.skills .note{transition:none} }
   @media (max-width:640px) { nav a{margin-left:1rem} section{align-items:flex-end} }
 </style>
-<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
 <a class="skip" href="#work">Skip to projects</a>
@@ -166,7 +157,7 @@
 <header>
   <div class="wrap">
     <a class="brand" href="#hero">Syahmi Ikhwan</a>
-    <nav aria-label="Main"><a href="#work">Work</a><a href="#viewer">3D model</a><a href="#about">About</a><a href="#timeline">Timeline</a><a href="#contact">Contact</a></nav>
+    <nav aria-label="Main"><a href="#work">Work</a><a href="#roles">Roles</a><a href="#about">About</a><a href="#timeline">Timeline</a><a href="#contact">Contact</a></nav>
   </div>
 </header>
 
@@ -175,34 +166,22 @@
     <span class="tag">3D animation portfolio</span>
     <h1><span><i>Syahmi Ikhwan</i></span><span><i>3D generalist</i></span></h1>
     <p class="lead">I study animation at UNIMAS. I love texturing 3D models and laying out environments. Scroll to see the same object as a clay render, a wireframe and a point cloud.</p>
-    <div class="btns"><a class="btn" href="#work">View projects</a><a class="btn alt" href="#contact">Get in touch</a><a class="btn alt" href="https://www.youtube.com/@yourchannel" target="_blank" rel="noopener noreferrer">Watch reel</a></div>
+    <div class="btns"><a class="btn" href="#work">View projects</a><a class="btn alt" href="#contact">Get in touch</a></div>
     <p class="scrollcue"><span class="cue-line"></span>Scroll down. Move your mouse to light the shape.</p>
   </div></div></section>
 
   <section id="work" data-i="1"><div class="wrap">
     <span class="tag">01 / Work</span>
     <h2>Selected work</h2>
-    <p>Open a project to switch between the final render, the clay pass and the wireframe.</p>
-    <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+    <p>Projects done so far as an animation student.</p>
     <div class="grid" id="grid"></div>
   </div></section>
 
-  <section id="viewer" data-i="4"><div class="wrap">
-    <span class="tag">02 / 3D model</span>
-    <h2>Explore a model</h2>
-    <p>Drag to rotate, scroll or pinch to zoom, and use the controls below.</p>
-    <div class="viewer">
-      <model-viewer id="mv" src="models/model.glb" alt="Interactive 3D model" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" exposure="1" environment-image="neutral" interaction-prompt="auto" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
-      <div class="vmsg" id="vmsg"><p>Loading the model...</p></div>
-    </div>
-    <div class="vctl">
-      <button type="button" id="vrot" aria-pressed="true">Auto-rotate</button>
-      <button type="button" id="vreset">Reset view</button>
-      <label class="range">Light <input type="range" id="vexp" min="0.3" max="2" step="0.1" value="1" aria-label="Exposure"></label>
-      <select id="vanim" aria-label="Animation" hidden></select>
-      <button type="button" id="vplay" aria-pressed="true" hidden>Pause</button>
-      <label class="pick">Open a .glb from this device<input type="file" id="vfile" accept=".glb,model/gltf-binary"></label>
-    </div>
+  <section id="roles" data-i="1"><div class="wrap">
+    <span class="tag">02 / Roles</span>
+    <h2>My roles</h2>
+    <p>What I did on each project.</p>
+    <ul class="roles" id="rolelist" aria-label="Roles by project"></ul>
   </div></section>
 
   <section id="about" data-i="2"><div class="wrap"><div class="copy">
@@ -210,7 +189,7 @@
     <h2>About</h2>
     <p>I am an animation student at UNIMAS and a 3D generalist. I enjoy texturing 3D models and laying out environments, and next I am preparing for my final year project.</p>
     <!-- Edit these numbers and labels -->
-    <div class="stats"><div><b data-count="4">4</b><span>Projects</span></div><div><b data-count="40" data-suffix=" s">40 s</b><span>Short film</span></div><div><b data-count="4">4</b><span>Tools</span></div></div>
+    <div class="stats"><div><b data-count="5">5</b><span>Projects</span></div><div><b data-count="40" data-suffix=" s">40 s</b><span>Short film</span></div><div><b data-count="4">4</b><span>Tools</span></div></div>
     <p class="hint">Select a step to see what it does to the shape.</p>
     <ul class="process" aria-label="Workflow">
       <li><button type="button" data-step="model" aria-pressed="false"><b>Model</b><span>Blocking, sculpting, retopology</span></button></li>
@@ -231,12 +210,11 @@
   <section id="timeline" data-i="3"><div class="wrap"><div class="copy">
     <span class="tag">04 / Timeline</span>
     <h2>Experience</h2>
-    <p class="hint">Select an entry to open it. These are placeholders.</p>
+    <p class="hint">Select an entry to open it.</p>
     <ol class="tl" aria-label="Timeline">
-      <li><button type="button" aria-expanded="false"><b>2023</b><span>Started animation course</span></button><p hidden>Add what you learned or made this year.</p></li>
-      <li><button type="button" aria-expanded="false"><b>2024</b><span>First short film</span></button><p hidden>Add the film title, your role and the software used.</p></li>
-      <li><button type="button" aria-expanded="false"><b>2025</b><span>Placement or freelance work</span></button><p hidden>Add the client or studio and what you delivered.</p></li>
-      <li><button type="button" aria-expanded="false"><b>2026</b><span>Final year project</span></button><p hidden>Add a one-line pitch for your final animation.</p></li>
+      <li><button type="button" aria-expanded="false"><b>2024</b><span>Started my journey</span></button><p hidden>I began my journey as an animation student.</p></li>
+      <li><button type="button" aria-expanded="false"><b>2025</b><span>Learned about the animation industry</span></button><p hidden>I started gaining knowledge about the animation industry.</p></li>
+      <li><button type="button" aria-expanded="false"><b>2026</b><span>Created my best 3D project</span></button><p hidden>I created my best 3D project to date. Afterward, I will start my final year project.</p></li>
     </ol>
   </div></div></section>
 
@@ -245,10 +223,7 @@
     <h2>Let's work together</h2>
     <a class="mail" href="mailto:kuraeii51@gmail.com">kuraeii51@gmail.com</a>
     <div class="links">
-      <a class="btn alt" href="https://instagram.com/yourhandle" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a class="btn alt" href="https://linkedin.com/in/yourname" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a class="btn alt" href="https://www.artstation.com/yourhandle" target="_blank" rel="noopener noreferrer">ArtStation</a>
-      <a class="btn alt" href="https://www.youtube.com/@yourchannel" target="_blank" rel="noopener noreferrer">Demo reel</a>
+      <a class="btn alt" href="https://www.linkedin.com/in/syahmi-ikhwan-bin-arman-18aa42336" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <button type="button" class="btn alt" id="copy">Copy email</button>
     </div>
     <div class="qr"><div id="qr" role="img" aria-label="QR code that opens this portfolio"></div><p>Scan to open this portfolio on your phone.</p></div>
@@ -268,15 +243,10 @@
         <button type="button" id="close">Close</button>
       </div>
     </div>
-    <h3 id="dt"></h3><p id="dd"></p>
+    <h3 id="dt"></h3><p id="dd"></p><p class="drole" id="dr"></p>
     <a class="btn alt" id="dlink" target="_blank" rel="noopener noreferrer">View full project</a>
     <div class="strip" id="strip" role="group" aria-label="All projects"></div>
-    <div class="passes" role="group" aria-label="Render pass">
-      <button type="button" data-pass="" aria-pressed="true">Final</button>
-      <button type="button" data-pass="clay" aria-pressed="false">Clay</button>
-      <button type="button" data-pass="wire" aria-pressed="false">Wireframe</button>
-    </div>
-    <p class="dkeys">Keyboard: left and right arrows change project, keys 1 to 3 change the pass.</p>
+    <p class="dkeys">Keyboard: left and right arrows change project.</p>
   </div>
 </dialog>
 
@@ -287,14 +257,15 @@
 
   /* ---- Projects: edit this list. Add media: { t, d, media:'<video src="videos/a.mp4" controls></video>' } ---- */
   const projects = [
-    { t:'Title Sequence', c:'Title sequence', d:'Title sequence by Apollo LM Production.', youtube:'8ByOU_bEueA', link:'https://www.youtube.com/watch?v=8ByOU_bEueA' },
-    { t:'TV Ident', c:'TV ident', d:'TV ident.', youtube:'KMn-esqrkPY', link:'https://www.youtube.com/watch?v=KMn-esqrkPY' },
-    { t:'Sound Design', c:'Sound design', d:'Sound design.', youtube:'hQUG7Y3LeMo', link:'https://www.youtube.com/watch?v=hQUG7Y3LeMo' },
-    { t:'Motion Capture Final Project', c:'Motion capture', d:'Motion capture final project.', youtube:'gzt4EAkjDpE', link:'https://www.youtube.com/watch?v=gzt4EAkjDpE' }
+    { t:'Title Sequence', c:'Title sequence', d:'Title sequence by Apollo LM Production.', roles:['Director','Layout Artist','Texture Artist'], youtube:'8ByOU_bEueA', link:'https://www.youtube.com/watch?v=8ByOU_bEueA' },
+    { t:'TV Ident', c:'TV ident', d:'A motion design project in improving 3D animation skill.', roles:['Director','3D Modeler / Rigging','Background Artist','Post-Production'], youtube:'KMn-esqrkPY', link:'https://www.youtube.com/watch?v=KMn-esqrkPY' },
+    { t:'Sound Design', c:'Sound design', d:'Making foley and sound editing in existing animation to understand the importance of sound in animation.', roles:['Editor'], youtube:'hQUG7Y3LeMo', link:'https://www.youtube.com/watch?v=hQUG7Y3LeMo' },
+    { t:'Motion Capture Final Project', c:'Motion capture', d:'The result of creating a story through the use of motion capture and online models using Blender, Mixamo and Motive.', roles:['Post-Production','Layout Artist'], youtube:'gzt4EAkjDpE', link:'https://www.youtube.com/watch?v=gzt4EAkjDpE' },
+    { t:'VFX Project', c:'VFX', d:'Learning motion tracking and match tracking the model into the clean plate footage.', roles:['VFX Artist'], youtube:'WcxeBeIVdGY', link:'https://www.youtube.com/watch?v=WcxeBeIVdGY' }
   ];
   /* Add video: video:'videos/one.mp4'  or  youtube:'VIDEO_ID'  or  img:'images/one.jpg' to any project above. */
   const grid = document.getElementById('grid'), dlg = document.getElementById('dlg'), stage = document.getElementById('stage');
-  const strip = document.getElementById('strip'), fbar = document.getElementById('filters');
+  const strip = document.getElementById('strip');
   let list = projects, cur = 0;
   const gi = p => projects.indexOf(p) % 4;
   const G = ['linear-gradient(135deg,#6C86FF,#B7C4FF)','linear-gradient(135deg,#FFC8B4,#FF8F70)','linear-gradient(135deg,#8FD9C0,#3F9E84)','linear-gradient(135deg,#C9A7FF,#7A56D6)'];
@@ -323,22 +294,19 @@
       grid.appendChild(b);
     });
   }
-  ['All', ...new Set(projects.map(p => p.c))].forEach((c, k) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.textContent = c; b.setAttribute('aria-pressed', String(k === 0));
-    b.onclick = () => {
-      list = c === 'All' ? projects : projects.filter(p => p.c === c);
-      render();
-      fbar.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    };
-    fbar.appendChild(b);
-  });
   render();
+  const rolesEl = document.getElementById('rolelist');
+  projects.forEach(p => {
+    const li = document.createElement('li');
+    li.innerHTML = `<div><b>${p.t}</b><small>${p.c}</small></div><div class="chips">${p.roles.map(r => `<span>${r}</span>`).join('')}</div>`;
+    rolesEl.appendChild(li);
+  });
   function show(n) {
     cur = (n + list.length) % list.length;
     const p = list[cur];
     document.getElementById('dt').textContent = p.t;
     document.getElementById('dd').textContent = p.d;
+    document.getElementById('dr').textContent = 'Role: ' + p.roles.join(', ');
     document.getElementById('count').textContent = (cur + 1) + ' of ' + list.length;
     stage.className = 'stage g' + gi(p);
     stage.innerHTML = mediaFor(p);
@@ -353,14 +321,7 @@
       t.onclick = () => show(k);
       strip.appendChild(t);
     });
-    setPass('');
   }
-  function setPass(v) {
-    stage.classList.remove('clay', 'wire');
-    if (v) stage.classList.add(v);
-    dlg.querySelectorAll('[data-pass]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.pass === v)));
-  }
-  dlg.querySelectorAll('[data-pass]').forEach(x => x.onclick = () => setPass(x.dataset.pass));
   document.getElementById('prev').onclick = () => show(cur - 1);
   document.getElementById('next').onclick = () => show(cur + 1);
   document.getElementById('close').onclick = () => dlg.close();
@@ -369,9 +330,6 @@
   dlg.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') show(cur - 1);
     if (e.key === 'ArrowRight') show(cur + 1);
-    if (e.key === '1') setPass('');
-    if (e.key === '2') setPass('clay');
-    if (e.key === '3') setPass('wire');
   });
 
   /* ---- Scroll progress and current nav link ---- */
@@ -424,7 +382,7 @@
     }), { threshold:.6 }).observe(c);
   });
   const hudm = document.getElementById('hudm'), hudp = document.getElementById('hudp');
-  const modes = ['Clay', 'Wireframe', 'Point cloud', 'Clay + wire', 'Model viewer'];
+  const modes = ['Clay', 'Wireframe', 'Point cloud', 'Clay + wire'];
   new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) hudm.textContent = modes[+e.target.dataset.i]; }), { rootMargin:'-45% 0px -45% 0px' })
     .observe(document.getElementById('hero'));
   document.querySelectorAll('section').forEach(sec => new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) hudm.textContent = modes[+e.target.dataset.i]; }), { rootMargin:'-45% 0px -45% 0px' }).observe(sec));
@@ -484,8 +442,7 @@
       { x:3,  y:0,   s:1,    clay:1, wire:0,   pts:0 },
       { x:0,  y:0,   s:1.9,  clay:0, wire:.22, pts:0 },
       { x:3,  y:0,   s:1.1,  clay:0, wire:0,   pts:1 },
-      { x:3,  y:0,   s:.9,   clay:1, wire:.5,  pts:0 },
-      { x:0,  y:0,   s:1,    clay:0, wire:0,   pts:0 }
+      { x:3,  y:0,   s:.9,   clay:1, wire:.5,  pts:0 }
     ];
     let idx = 0, narrow = false;
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) idx = +e.target.dataset.i; }),
@@ -535,44 +492,6 @@
   } catch (err) {
     canvas.remove();
   }
-</script>
-<script>
-  /* ---- 3D model viewer: put your file at models/model.glb (export from Blender as glTF Binary) ---- */
-  (function () {
-    const mv = document.getElementById('mv'), msg = document.getElementById('vmsg');
-    const rot = document.getElementById('vrot'), exp = document.getElementById('vexp');
-    const sel = document.getElementById('vanim'), play = document.getElementById('vplay'), file = document.getElementById('vfile');
-    let blobUrl = null;
-    const setRot = on => { mv.toggleAttribute('auto-rotate', on); rot.setAttribute('aria-pressed', String(on)); };
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) setRot(false);
-    rot.onclick = () => setRot(!mv.hasAttribute('auto-rotate'));
-    document.getElementById('vreset').onclick = () => { mv.cameraOrbit = 'auto auto auto'; mv.cameraTarget = 'auto auto auto'; mv.fieldOfView = 'auto'; mv.jumpCameraToGoal && mv.jumpCameraToGoal(); };
-    exp.oninput = () => { mv.exposure = exp.value; };
-    mv.addEventListener('load', () => {
-      msg.hidden = true;
-      const names = mv.availableAnimations || [];
-      sel.hidden = play.hidden = !names.length;
-      if (names.length) {
-        sel.innerHTML = names.map(n => `<option>${n}</option>`).join('');
-        mv.animationName = names[0]; mv.play(); play.textContent = 'Pause'; play.setAttribute('aria-pressed', 'true');
-      }
-    });
-    mv.addEventListener('error', () => {
-      msg.hidden = false;
-      msg.innerHTML = '<p>No model yet.<br>Upload your .glb file to a <b>models</b> folder as <b>model.glb</b>,<br>or use "Open a .glb from this device" to try one now.</p>';
-    });
-    sel.onchange = () => { mv.animationName = sel.value; mv.play(); play.textContent = 'Pause'; play.setAttribute('aria-pressed', 'true'); };
-    play.onclick = () => {
-      const running = !mv.paused;
-      running ? mv.pause() : mv.play();
-      play.textContent = running ? 'Play' : 'Pause'; play.setAttribute('aria-pressed', String(!running));
-    };
-    file.onchange = () => {
-      const f = file.files[0]; if (!f) return;
-      if (blobUrl) URL.revokeObjectURL(blobUrl);
-      blobUrl = URL.createObjectURL(f); msg.hidden = false; msg.innerHTML = '<p>Loading the model...</p>'; mv.src = blobUrl;
-    };
-  })();
 </script>
 </body>
 </html>
